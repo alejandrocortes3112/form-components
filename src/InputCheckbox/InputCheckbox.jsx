@@ -30,6 +30,12 @@ export default function InputCheckbox(props) {
     />
   );
 }
+
 InputCheckbox.propTypes = {
-  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  control: PropTypes.object.isRequired,
+};
+
+InputCheckbox.defaultProps = {
+  label: "",
 };

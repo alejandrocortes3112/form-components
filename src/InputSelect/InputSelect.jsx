@@ -40,6 +40,11 @@ export default function InputSelect(props) {
 }
 
 InputSelect.propTypes = {
+  name: PropTypes.string.isRequired,
+  control: PropTypes.object.isRequired,
   options: PropTypes.instanceOf(Array),
-  label: PropTypes.string,
+};
+
+InputSelect.defaultProps = {
+  label: "",
 };

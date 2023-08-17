@@ -43,6 +43,11 @@ export default function InputRadio(props) {
 }
 
 InputRadio.propTypes = {
+  name: PropTypes.string.isRequired,
+  control: PropTypes.object.isRequired,
   options: PropTypes.instanceOf(Array),
-  label: PropTypes.string,
+};
+
+InputRadio.defaultProps = {
+  label: "",
 };
