@@ -9,6 +9,7 @@ export default function InputPattern(props) {
   return (
     <Controller
       name={name}
+      control={control}
       render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
         <PatternFormat
           value={value}
