@@ -1,70 +1,165 @@
-# Getting Started with Create React App
+# Visio React-Hook-Form base components
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Set of reusable controlled input components provided by [MUI](https://mui.com/) and ready to be used with [react-hook-form](https://react-hook-form.com/).
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+### `yarn add visio-react-base`
 
-### `npm start`
+### `npm install visio-react-base`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Libraries we used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+[react-hook-form](https://react-hook-form.com/)
 
-### `npm test`
+[MUI](https://mui.com/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[react-number-format](https://s-yadav.github.io/react-number-format/docs/intro/)
 
-### `npm run build`
+[axios-hooks](https://github.com/simoneb/axios-hooks)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Basic usage
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Import the component or components you want to use and plug them in your form. See example below:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```javascript
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import {InputText} from "visio-rhf-base";
+...
 
-### `npm run eject`
+const schema = yup.object().shape({
+  name: yup.string(),
+})
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+const { ...methods } = useForm({
+  resolver: yupResolver(schema),
+  defaultValues: {
+    name: "",
+  },
+});
+<form>
+  <InputText
+    name="name"
+    control={methods.control}
+    label="Name"
+    fullWidth
+  />
+  <Button type="submit">Send</Button>
+</form>
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+We don't require the use of react-hook-form [useFormContext](https://react-hook-form.com/api/useformcontext/#main) wrapping the form for these simple components, but feel free to use it.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Available components
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Required props
 
-## Learn More
+Just 2 props are required
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- control
+- name
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### InputText
 
-### Code Splitting
+Most basic of the elements, designed to accept text or number, you can pass all the attributes available for [TextField](https://mui.com/material-ui/react-text-field/).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```javascript
+<InputText name="name" control={methods.control} label="Name" />
+```
 
-### Analyzing the Bundle Size
+### InputNumber
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+This is based on [numeric-format](https://s-yadav.github.io/react-number-format/docs/numeric_format) from [react-number-format](https://s-yadav.github.io/react-number-format/docs/intro/). It is going to allow only number inputs and will return a float when you type. You can extend this components using the props in the documentation, you can specify decimals, format as a currency or just as a good old number. Below you have 2 examples
 
-### Making a Progressive Web App
+```javascript
+<InputNumber
+  name="creditScore"
+  control={methods.control}
+  label="Credit Score"
+/>
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```javascript
+<InputNumber
+  name="amount"
+  control={methods.control}
+  label="Amount"
+  thousandSeparator=","
+  prefix="$"
+  decimalScale={2}
+/>
+```
 
-### Advanced Configuration
+### InputPattern
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+This is based on [pattern-format](https://s-yadav.github.io/react-number-format/docs/pattern_format) from [react-number-format](https://s-yadav.github.io/react-number-format/docs/intro/). It is going to format your string according to the format parameter you pass, this returns a formatted string. You can extend this using any props in the react-number-format and MUI libraries. Examples below for a FEIN and a US phone:
 
-### Deployment
+```javascript
+<InputPattern
+  name="fein"
+  label="FEIN"
+  control={control}
+  format="##-#######"
+  allowEmptyFormatting
+  mask="_"
+/>
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```javascript
+<InputPattern
+  name="phone"
+  label="Phone"
+  control={control}
+  format="(###) ###-####"
+  allowEmptyFormatting
+  mask="_"
+/>
+```
 
-### `npm run build` fails to minify
+### InputSelect
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Select component which is going to accept a group of options and display them as a combobox.
+
+```javascript
+<InputSelect
+  name="contactMethod"
+  control={methods.control}
+  label="Contact Method"
+  options={
+    ({ label: "Phone", value: "Phone" }, { label: "Email", value: "Email" })
+  }
+/>
+```
+
+### InputRadio
+
+Radio component which is going to accept a group of options and display them as radio options.
+
+```javascript
+<InputRadio
+  name="contactMethod"
+  control={methods.control}
+  label="Contact Method"
+  options={
+    ({ label: "Phone", value: "Phone" }, { label: "Email", value: "Email" })
+  }
+/>
+```
+
+### InputCheckbox
+
+Checkbox component to render boolean fields. It will send a boolean value to the form
+
+```javascript
+<InputCheckbox
+  name="vaccinated"
+  control={methods.control}
+  label="Vaccinated?"
+/>
+```
+
+### FUTURE FEATURES WIP
+
+Find a clean way to add \* to required fields
